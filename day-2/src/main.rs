@@ -36,9 +36,11 @@ fn main() {
         .sum();
     println!("Part 1 answer: {}", id_sum);
     let fewest_numbers = games.into_iter().map(|game| {
-        let max_red = game.1.iter().map(|round| round.red).max().unwrap();
-        let max_green = game.1.iter().map(|round| round.green).max().unwrap();
-        let max_blue = game.1.iter().map(|round| round.blue).max().unwrap();
+        let get_max_with_map =
+            |f: fn(&Round) -> u32| -> u32 { game.1.iter().map(f).max().unwrap() };
+        let max_red = get_max_with_map(|round| round.red);
+        let max_green = get_max_with_map(|round| round.green);
+        let max_blue = get_max_with_map(|round| round.blue);
         max_red * max_green * max_blue
     });
     let fewest_numbers_sum: u32 = fewest_numbers.sum();
