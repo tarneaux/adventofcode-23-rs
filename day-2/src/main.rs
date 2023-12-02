@@ -23,7 +23,7 @@ fn main() {
         })
         .collect();
     let id_sum: u32 = games
-        .into_iter()
+        .iter()
         .filter(|game| {
             for round in &game.1 {
                 if round.red > 12 || round.green > 13 || round.blue > 14 {
@@ -34,7 +34,15 @@ fn main() {
         })
         .map(|game| game.0)
         .sum();
-    println!("{}", id_sum);
+    println!("Part 1 answer: {}", id_sum);
+    let fewest_numbers = games.into_iter().map(|game| {
+        let max_red = game.1.iter().map(|round| round.red).max().unwrap();
+        let max_green = game.1.iter().map(|round| round.green).max().unwrap();
+        let max_blue = game.1.iter().map(|round| round.blue).max().unwrap();
+        max_red * max_green * max_blue
+    });
+    let fewest_numbers_sum: u32 = fewest_numbers.sum();
+    println!("Part 2 answer: {}", fewest_numbers_sum);
 }
 
 struct Game(u32, Vec<Round>);
