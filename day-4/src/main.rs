@@ -11,10 +11,24 @@ fn main() {
         .try_collect()
         .unwrap();
     let scores: Vec<_> = cards.iter().map(|c| c.get_score()).try_collect().unwrap();
-    println!("{:?}", scores.iter().sum::<u32>());
+    println!("Part 1: {:?}", scores.iter().sum::<u32>());
+    let matches: Vec<_> = cards.iter().map(|c| c.get_matching().len()).collect();
+    let mut multipliers: Vec<_> = cards.iter().map(|_| 1).collect();
+    for i in 0..scores.len() {
+        let matching = matches[i];
+        let multiplier = multipliers[i];
+        for j in 1..=matching {
+            let index = i + j;
+            if index < multipliers.len() {
+                multipliers[index] += multiplier;
+            }
+        }
+    }
+    println!("{}", multipliers.iter().sum::<u32>());
 }
 
 #[derive(Debug)]
+
 struct Card {
     n: u32,
     winning: Vec<u32>,
